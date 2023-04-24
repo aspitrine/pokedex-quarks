@@ -68,7 +68,7 @@ export default function Home({ pokemons }: HomeProps) {
         <div className="flex gap-2 justify-center">
           <button
             type="button"
-            className="bg-white p-2 min-w-[15rem] rounded-lg font-bold hover:bg-[#F0F] disabled:bg-gray-400"
+            className="bg-white p-2 min-w-[10rem] rounded-lg font-bold hover:bg-[#F0F] disabled:bg-gray-400"
             onClick={() => setPageNumber((nb) => nb - 1)}
             disabled={pageNumber === 0}
           >
@@ -76,7 +76,7 @@ export default function Home({ pokemons }: HomeProps) {
           </button>
           <button
             type="button"
-            className="bg-white p-2 min-w-[15rem] rounded-lg font-bold hover:bg-[#F0F] disabled:bg-gray-400"
+            className="bg-white p-2 min-w-[10rem] rounded-lg font-bold hover:bg-[#F0F] disabled:bg-gray-400"
             onClick={() => setPageNumber((nb) => nb + 1)}
             // Je calcul l'index de départ de ma prochaine page
             // Si l'index est plus grand que mon nombre d'élément
@@ -86,7 +86,7 @@ export default function Home({ pokemons }: HomeProps) {
             Suivant
           </button>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-2 p-2">
+        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-2 p-2">
           {pokemonsFiltered.map((pokemon) => (
             <Link
               key={`${pokemon.pokedexId}${pokemon.name.fr}`}

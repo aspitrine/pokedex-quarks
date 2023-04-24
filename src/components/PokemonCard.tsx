@@ -18,11 +18,11 @@ export default function PokemonCard({ pokemon }: PokemonCardProps) {
           {pokemon.name.en}
         </h4>
       </div>
-      <p className="flex gap-2 justify-center">
+      <p className="flex flex-wrap gap-2 justify-center">
         {pokemon.types?.map((type) => (
-          <span key={type.name} className="flex items-center gap-2">
+          <span key={type.name} className="flex items-center gap-2 text-sm">
             {type.name}
-            <img src={type.image} alt={type.name} className="w-8" />
+            <img src={type.image} alt={type.name} className="w-6" />
           </span>
         ))}
       </p>
