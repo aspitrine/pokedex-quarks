@@ -1,7 +1,10 @@
 import { Pokemon } from '@/@types/pokemon';
 import PokemonCard from '@/components/PokemonCard';
 import Head from 'next/head';
-import { useMemo, useState } from 'react';
+import Link from 'next/link';
+import {
+  ChangeEvent, useMemo, useState,
+} from 'react';
 
 // Fonction exécuter côté serveur pour récuperer les données provenant de différente API
 export async function getServerSideProps() {
@@ -25,6 +28,12 @@ export default function Home({ pokemons }: HomeProps) {
     return pokemons.slice(indexStart, indexEnd);
   }, [pokemons, pageNumber, nbPerPage]);
 
+  const handleChangeNbPerPage = (event: ChangeEvent<HTMLSelectElement>) => {
+    const newNbPerPage = Number(event.target.value);
+    setNbPerPage(newNbPerPage);
+    setPageNumber(0);
+  };
+
   return (
     <>
       <Head>
@@ -35,8 +44,8 @@ export default function Home({ pokemons }: HomeProps) {
           Pokédex
         </h1>
         <div className="flex justify-center gap-2 py-2">
-          <span>Nombre de pokemons par page</span>
-          <select onChange={(e) => setNbPerPage(Number(e.target.value))}>
+          <span className="text-white">Nombre de pokemons par page</span>
+          <select onChange={handleChangeNbPerPage}>
             <option value="20">20</option>
             <option value="50">50</option>
             <option value="100">100</option>
@@ -66,10 +75,15 @@ export default function Home({ pokemons }: HomeProps) {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-2 p-2">
           {pokemonsFiltered.map((pokemon) => (
-            <PokemonCard
+            <Link
               key={`${pokemon.pokedexId}${pokemon.name.fr}`}
-              pokemon={pokemon}
-            />
+              href={`/pokemon/${pokemon.pokedexId}`}
+              className="flex"
+            >
+              <PokemonCard
+                pokemon={pokemon}
+              />
+            </Link>
           ))}
         </div>
       </main>
