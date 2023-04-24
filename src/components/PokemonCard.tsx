@@ -10,9 +10,14 @@ export default function PokemonCard({ pokemon }: PokemonCardProps) {
         src={pokemon.sprites.shiny || pokemon.sprites.regular}
         alt={pokemon.name.fr}
       />
-      <h3 className="font-bold text-center py-2">
-        {`#${pokemon.pokedexId} - ${pokemon.name.fr}`}
-      </h3>
+      <div className="py-2 text-center">
+        <h3 className="font-bold">
+          {`#${pokemon.pokedexId} - ${pokemon.name.fr}`}
+        </h3>
+        <h4 className="text-gray-500 text-center">
+          {pokemon.name.en}
+        </h4>
+      </div>
       <p className="flex gap-2 justify-center">
         {pokemon.types?.map((type) => (
           <span key={type.name} className="flex items-center gap-2">
