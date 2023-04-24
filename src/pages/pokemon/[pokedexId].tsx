@@ -1,8 +1,10 @@
 import { Pokemon } from '@/@types/pokemon';
 import PokemonStats from '@/components/PokemonStats';
+import { fetchApi } from '@/utils/api';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { ChevronLeft } from 'react-feather';
 
 interface PokemonDetailProps {
@@ -13,8 +15,7 @@ export const getServerSideProps: GetServerSideProps<PokemonDetailProps> = async 
   // Je récupère la valeur de mon paramètre se nommant pokedexId
   const pokedexId = context.params?.pokedexId as string;
 
-  const pokemon: Pokemon = await fetch(`${process.env.baseURL}/api/v1/pokemon/${pokedexId}`)
-    .then((r) => r.json());
+  const pokemon = await fetchApi<Pokemon>(`api/v1/pokemon/${pokedexId}`);
 
   // On retourne un objet contenant props, props étant les propriété
   // qui seront passé à notre composant en dessous
@@ -22,6 +23,7 @@ export const getServerSideProps: GetServerSideProps<PokemonDetailProps> = async 
 };
 
 export default function PokemonDetail({ pokemon }: PokemonDetailProps) {
+  const router = useRouter();
   return (
     <>
       <Head>
@@ -31,9 +33,9 @@ export default function PokemonDetail({ pokemon }: PokemonDetailProps) {
       </Head>
       <main className="bg-cyan-500 min-h-screen">
         <h1 className="text-4xl font-bold text-white pt-2 flex justify-center items-center gap-4">
-          <Link href="/">
+          <button onClick={() => router.back()} type="button">
             <ChevronLeft />
-          </Link>
+          </button>
           {pokemon.name.fr}
         </h1>
         <div className="p-4">
@@ -111,7 +113,7 @@ export default function PokemonDetail({ pokemon }: PokemonDetailProps) {
               )}
             </div>
 
-            {pokemon.evolution.mega && (
+            {pokemon.evolution?.mega && (
             <div className="text-center">
               <h2 className="mt-2 font-bold text-xl">Méga</h2>
               <div>

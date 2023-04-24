@@ -1,15 +1,16 @@
 import { Pokemon } from '@/@types/pokemon';
 import PokemonCard from '@/components/PokemonCard';
+import { fetchApi } from '@/utils/api';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import {
-  ChangeEvent, useMemo, useState,
+  ChangeEvent, useEffect, useMemo, useState,
 } from 'react';
 
 // Fonction exécuter côté serveur pour récuperer les données provenant de différente API
 export async function getServerSideProps() {
-  const pokemons: Pokemon[] = await fetch(`${process.env.baseURL}/api/v1/pokemon`)
-    .then((r) => r.json());
+  const pokemons = await fetchApi<Pokemon[]>('/api/v1/pokemon');
   // On retourne un objet contenant props, props étant les propriété
   // qui seront passé à notre composant en dessous
   return { props: { pokemons } };
@@ -19,8 +20,12 @@ interface HomeProps {
   pokemons: Pokemon[]
 }
 export default function Home({ pokemons }: HomeProps) {
-  const [pageNumber, setPageNumber] = useState(0);
-  const [nbPerPage, setNbPerPage] = useState(20);
+  const router = useRouter();
+  const defaultPageNumber = Number(router.query.pageNumber) || 0;
+  const [pageNumber, setPageNumber] = useState(defaultPageNumber);
+
+  const defaultNbPerPage = Number(router.query.nbPerPage) || 20;
+  const [nbPerPage, setNbPerPage] = useState(defaultNbPerPage);
 
   const pokemonsFiltered = useMemo(() => {
     const indexStart = pageNumber * nbPerPage;
@@ -34,6 +39,14 @@ export default function Home({ pokemons }: HomeProps) {
     setPageNumber(0);
   };
 
+  useEffect(() => {
+    router.query.nbPerPage = nbPerPage.toString();
+    router.query.pageNumber = pageNumber.toString();
+    router.push(router, undefined, {
+      shallow: true,
+    });
+  }, [nbPerPage, pageNumber]);
+
   return (
     <>
       <Head>
@@ -45,7 +58,7 @@ export default function Home({ pokemons }: HomeProps) {
         </h1>
         <div className="flex justify-center gap-2 py-2">
           <span className="text-white">Nombre de pokemons par page</span>
-          <select onChange={handleChangeNbPerPage}>
+          <select onChange={handleChangeNbPerPage} value={nbPerPage}>
             <option value="20">20</option>
             <option value="50">50</option>
             <option value="100">100</option>

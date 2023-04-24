@@ -5,7 +5,7 @@ interface PokemonCardProps {
 }
 export default function PokemonCard({ pokemon }: PokemonCardProps) {
   return (
-    <div className=" bg-white rounded-lg shadow-lg p-4 flex flex-col w-full">
+    <div className=" bg-white rounded-lg shadow-lg p-4 flex flex-col w-full hover:rotate-12 duration-300 hover:scale-110 hover:bg-[#F0F]">
       <img
         src={pokemon.sprites.shiny || pokemon.sprites.regular}
         alt={pokemon.name.fr}
