@@ -13,7 +13,7 @@ export const getServerSideProps: GetServerSideProps<PokemonDetailProps> = async 
   // Je récupère la valeur de mon paramètre se nommant pokedexId
   const pokedexId = context.params?.pokedexId as string;
 
-  const pokemon: Pokemon = await fetch(`https://api-pokemon-fr.vercel.app/api/v1/pokemon/${pokedexId}`)
+  const pokemon: Pokemon = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/pokemon/${pokedexId}`)
     .then((r) => r.json());
 
   // On retourne un objet contenant props, props étant les propriété

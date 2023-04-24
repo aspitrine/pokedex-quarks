@@ -8,7 +8,7 @@ import {
 
 // Fonction exécuter côté serveur pour récuperer les données provenant de différente API
 export async function getServerSideProps() {
-  const pokemons: Pokemon[] = await fetch('https://api-pokemon-fr.vercel.app/api/v1/pokemon')
+  const pokemons: Pokemon[] = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/pokemon`)
     .then((r) => r.json());
   // On retourne un objet contenant props, props étant les propriété
   // qui seront passé à notre composant en dessous
